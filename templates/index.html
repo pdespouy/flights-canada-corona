@@ -7,81 +7,10 @@
 
 <html>
 	<head>
-		<script src="/static/d3.v5.js"></script>
-		<script src="/static/topojson-client.js"></script>
 	</head>
-	<body style="background-color: grey">
-		<svg id="my_dataviz" width="640" height="300"></svg>
+	<body>
 	</body>
 </html>
 
-<script type="text/javascript">
-
-// The svg
-let svg = d3.select("svg"),
-    width = +svg.attr("width"),
-    height = +svg.attr("height");
-
-// Map and projection
-// projections: geoMercator, geoNaturalEarth1
-let projection = d3.geoMercator()
-    .scale(80)
-    .translate([width/2, height/2*1.24])
-
-// Create data: coordinates of start and end
-// tojson to escape special characters
-// we parse to convert string to object
-let link = JSON.parse('{{ links | tojson }}');
-
-// let link = [{"coordinates": [[-79.63, 43.68], [-115.15, 36.08]], "type": "LineString"}, {"coordinates": [[-82.53, 27.98], [-79.63, 43.68]], "type": "LineString"}];
-
-// A path generator
-let path = d3.geoPath()
-    .projection(projection)
-
-let lines;
-// Load world shape
-d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json")
-	.then(function(world) {
-
-    // Draw the map
-    svg.insert("path", ".graticule")
-        .datum(topojson.feature(world, world.objects.land))
-        .attr("class", "land")
-      	.attr("d", path);
-
-    // Add the path
-    svg.selectAll("myPath")
-      .data(link)
-      .enter()
-      .append("path")
-      	.attr("class", "lines")
-        .attr("d", function(d){ return path(d)})
-        .style("fill", "none")
-        .style("stroke", "red")
-        .style("stroke-width", 2);
-
-  //   link = [
-		// 	{'type': 'LineString', 'coordinates': [[-123.18, 49.19], [-122.38, 37.62]]},
-		// 	{'type': 'LineString', 'coordinates': [[-97.24, 49.91], [-123.18, 49.19]]}
-		// ];
-	let aircraft = "c0172e";
-	link = link.filter(function(link) {
-		return link.aircraft == aircraft;
-	})
-
-	// svg.selectAll(".lines").remove();
-	svg.selectAll("myPath")
-		.data(link)
-		.enter().append("path")
-			.attr("class", "lines")
-			.attr("d", function(d){ return path(d)})
-			.style("fill", "none")
-			.style("stroke", "green")
-			.style("stroke-width", 2);
-
-})
-
-</script>
 </body>
 </html>
