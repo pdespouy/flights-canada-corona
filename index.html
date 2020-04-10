@@ -1,77 +1,190 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
-	<meta charset="utf-8">
-	<script src="https://d3js.org/d3.v4.js"></script>
+  <title></title>
+  <meta charset="utf-8">
+  <script src="static/d3.v5.js"></script>
+  <script src="static/topojson-client.js"></script>
+  <script src="static/d3-simple-slider.min.js"></script>
+  <!-- <script type="module" src="static/versor.js"></script> -->
+  <!-- https://picnicss.com/documentation -->
+  <link rel="stylesheet" type="text/css" href="static/picnic.min.css">
+  <style type="text/css">
+  svg {
+   /* width: 1280px;
+    height: 800px;
+    pointer-events: all;*/
+  }
+  </style>
 </head>
 
 <body>
-	<div id="my_dataviz"></div>
+  <button onclick="play();">Play</button>
+  <div>
+    <!-- map -->
+    <svg id="map" width="640" height="600"></svg>
+  </div>
+  <div class="row align-items-center">
+    <!-- <div class="col-sm-2"><p id="value-time"></p></div> -->
+    <div class="col-sm"><div id="slider-time"></div></div>
+  </div>
 </body>
 
 <script>
+// Lots of code from:
+//  http://bl.ocks.org/dwtkns/4686432
+//  http://mbostock.github.io/d3/talk/20111018/azimuthal.html
+//  ideal: https://observablehq.com/@d3/versor-dragging
 
-// set the dimensions and margins of the graph
-var margin = {top: 10, right: 30, bottom: 30, left: 50},
-    width = 460 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+  let colourPath    = "#1E88E540";
+  let colourSphere  = "#F8F8F8";
+  let colourLand    = "#AAA";
+// D3 Map
+  // The svg
+  let svg = d3.select("svg")
+            .on("mousedown", mousedown),
+    width = +svg.attr("width"),
+    height = +svg.attr("height");
 
-// append the svg object to the body of the page
-var svg = d3.select("#my_dataviz")
-  .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
+  // Map and projection
+  // projections: geoMercator, geoNaturalEarth1
+  let projection = d3.geoOrthographic()
+    .scale(220)
+    .translate([320,320])
+    .clipAngle(90)
+    .rotate([90,-25,0]);
 
-//Read the data
-d3.csv("data.csv",
+  // Path generator
+  let path = d3.geoPath()
+      .projection(projection);
 
-  function(d){
-    return { date : d3.timeParse("%Y-%m-%d")(d.date), value : d.value }
-  },
+  // Load flights data
+  let link;
+   d3.json("data.json")
+    .then(function(data) {
+      link = data;
+    });
 
-  function(data) {
+  // Load world shape
+  d3.json("static/land-110m.json")
+    .then(function(world) {
 
-    // Add X axis
-    var x = d3.scaleTime()
-      .domain(d3.extent(data, function(d) { return d.date; }))
-      .range([ 0, width ]);
-    svg.append("g")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x).ticks(8));
+      var sphere = {type:"Sphere"};
+    
+      svg.append("path")
+        .datum(sphere)
+        .attr("d", path)
+        .attr("fill", colourSphere);
 
-    // Add Y axis
-    var y = d3.scaleLinear()
-      .domain([0, d3.max(data, function(d) { return +d.value; })])
-      .range([ height, 0 ]);
-    svg.append("g")
-      .call(d3.axisLeft(y));
+      // Draw map
+      svg.insert("path", ".graticule")
+          .datum(topojson.feature(world, world.objects.land))
+          .attr("class", "land")
+          .attr("fill", colourLand)
+          .style("stroke", colourLand)
+          .attr("d", path);
 
-    // Add line
-    var path = svg.append("path")
-      .datum(data)
-      .attr("fill", "none")
-      .attr("stroke", "#69b3a2")
-      .attr("stroke-width", 1.5)
-      .attr("d", d3.line()
-        .x(function(d) { return x(d.date) })
-        .y(function(d) { return y(d.value) })
-        )
+      // Add paths
+      svg.selectAll("myPath")
+        .data(link[0])
+        .enter().append("path")
+          .attr("class", "lines")  // need to specify class
+          .attr("d", function(d){ return path(d)})
+          .style("fill", "none")
+          .style("stroke", colourPath)
+          .style("stroke-width", 2);
 
-    // Add animation
-    var totalLength = path.node().getTotalLength();
-    path
-      .attr("stroke-dasharray", totalLength + " " + totalLength)
-      .attr("stroke-dashoffset", totalLength)
-      .transition()
-      .duration(4000)
-      .ease(d3.easeLinear)
-      .attr("stroke-dashoffset", 0);
+  });
+
+  d3.select(window)
+    .on("mousemove", mousemove)
+    .on("mouseup", mouseup);
+
+  let m0, o0;
+
+  function mousedown() {
+    m0 = [d3.event.pageX, d3.event.pageY];
+    o0 = projection.rotate();
+    d3.event.preventDefault();
   }
-)
+
+  function mousemove() {
+    if (m0) {
+      let m1 = [d3.event.pageX, d3.event.pageY],
+          o1 = [o0[0] + (m1[0] - m0[0]) / 6, o0[1] + (m0[1] - m1[1]) / 6];
+      projection.rotate(o1);
+      svg.selectAll("path")
+       .attr("d", path);
+      // refresh();
+    }
+  }
+
+  function mouseup() {
+    if (m0) {
+      mousemove();
+      m0 = null;
+    }
+  }
+
+  // SLIDER    
+   // Time
+  var dataTime = d3.range(0, 31);
+
+  var sliderTime = d3
+    .sliderBottom()
+    .min(0)
+    .max(30)
+    .step(1)
+    .width(svg.attr("width") - 60)
+    // .tickFormat(d3.timeFormat('%Y'))
+    .tickValues(dataTime)
+    .default(0)
+    .on('onchange', val => {
+      // d3.select('p#value-time').text(val);
+      // add data
+      svg.selectAll(".lines")
+        // if you want a transition:
+        // .transition();
+        // .duration(100)
+        // .style("opacity", 0)
+        .remove();
+      
+      svg.selectAll("myPath")
+        .data(link[val])
+        .enter().append("path")
+          .attr("class", "lines")  // need to specify class
+          .attr("d", function(d){ return path(d)})
+          .style("fill", "none")
+          .style("stroke", colourPath)
+          .style("stroke-width", 2);
+    });
+
+  var gTime = d3
+    .select('div#slider-time')
+    .append('svg')
+    .attr('width', svg.attr("width"))
+    .attr('height', 100)
+    .append('g')
+    .attr('transform', 'translate(30,30)');
+
+  gTime.call(sliderTime);
+
+  // d3.select('p#value-time').text(sliderTime.value());
+
+  d3.select('svg#myPath').data(link[sliderTime.value()]);
+
+  function play() {
+    for (i of dataTime) { 
+      task(i);
+    } 
+    function task(i) { 
+      setTimeout(function() {
+          sliderTime.value(i);
+      }, 500 * i);
+    } 
+
+  }
+  // console.log(d3.select('svg#myPath').data(link[sliderTime.value()]));
 
 </script>
 
