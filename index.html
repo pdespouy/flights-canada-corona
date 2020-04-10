@@ -10,6 +10,9 @@
   <!-- https://picnicss.com/documentation -->
   <link rel="stylesheet" type="text/css" href="static/picnic.min.css">
   <style type="text/css">
+  body {
+    text-align: center;
+  }
   svg {
    /* width: 1280px;
     height: 800px;
@@ -19,6 +22,9 @@
 </head>
 
 <body>
+  <h3>Canadian Airlines and COVID19</h3>
+  <p>In March 2020, COVID19 there was a reduction in the number of flights per day from Canadian airlines
+  Number of flights from . Data used </p> 
   <button onclick="play();">Play</button>
   <div>
     <!-- map -->
@@ -128,17 +134,17 @@
 
   // SLIDER    
    // Time
-  var dataTime = d3.range(0, 31);
+  var dataTime = d3.range(1, 32);
 
   var sliderTime = d3
     .sliderBottom()
-    .min(0)
-    .max(30)
+    .min(1)
+    .max(31)
     .step(1)
     .width(svg.attr("width") - 60)
     // .tickFormat(d3.timeFormat('%Y'))
     .tickValues(dataTime)
-    .default(0)
+    .default(1)
     .on('onchange', val => {
       // d3.select('p#value-time').text(val);
       // add data
@@ -150,7 +156,7 @@
         .remove();
       
       svg.selectAll("myPath")
-        .data(link[val])
+        .data(link[val-1])
         .enter().append("path")
           .attr("class", "lines")  // need to specify class
           .attr("d", function(d){ return path(d)})
