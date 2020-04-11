@@ -11,16 +11,14 @@ if __name__ == "__main__":
 
 	cur = con.cursor()
 	cur.execute('''
-		SELECT icao24, DATE(firstSeen, 'unixepoch') AS firstSeen, fromCity, toCity, distance,
+		SELECT icao24, DATE(firstSeen, 'unixepoch') AS firstSeen, fromCity, toCity, distance, fromAirport, toAirport,
 			a.latitude AS fromLatitude, a.longitude AS fromLongitude,
-			b.latitude AS toLatitude,   b.longitude AS toLongitude,
-			CAST(ROUND(co2/1000) AS integer) AS co2
+			b.latitude AS toLatitude,   b.longitude AS toLongitude
 		FROM flights AS f
 		JOIN airports AS a
 		 ON f.fromAirport = a.gps_code
 		JOIN airports AS b
-		 ON f.toAirport = b.gps_code
-		WHERE distance > 0;
+		 ON f.toAirport = b.gps_code;
 		''')
 		  # -- AND lastSeen > strftime('%s', date('now','start of month'))
 		  # -- AND owner=?;
@@ -29,8 +27,20 @@ if __name__ == "__main__":
 	
 	# we convert to dataframe
 	df = pd.DataFrame(flights,
-		columns=['icao24','firstSeen','fromCity','toCity','distance','fromLatitude',
-		'fromLongitude','toLatitude','toLongitude','co2'])
+		columns=['icao24','firstSeen','fromCity','toCity','distance','fromAirport','toAirport','fromLatitude','fromLongitude','toLatitude','toLongitude'])
+
+	# for the map, we remove flights with distance 0/none.. and 26 is a bug!
+	df = df[df['distance']>26]
+	# download file with different columns
+	dw = df.copy()
+	del dw['fromCity']
+	del dw['toCity']
+	del dw['distance']
+	del dw['fromLatitude']
+	del dw['fromLongitude']
+	del dw['toLatitude']
+	del dw['toLongitude']
+	dw.to_csv('download.csv', encoding='utf-8', index=False)
 
 	# range of date
 	dateRange = pd.date_range(start="2020-03-01", end="2020-03-31")
