@@ -11,6 +11,8 @@
   <link rel="stylesheet" type="text/css" href="static/picnic.min.css">
   <style type="text/css">
   body {
+    margin: auto;
+    max-width: 640px;
     text-align: center;
   }
   svg {
@@ -18,20 +20,32 @@
     height: 800px;
     pointer-events: all;*/
   }
+  sup {
+    font-size: x-small
+  }
+  #footer {
+    margin: auto;
+    max-width: 640px;
+    text-align: left;
+  }
   </style>
 </head>
 
 <body>
-  <h3>Canadian Airlines and COVID19</h3>
-  <p>In March 2020, COVID19 there was a reduction in the number of flights per day from Canadian airlines
+  <div>
+    <h3>Canadian Airlines and COVID19</h3>
+    <p>In March 2020, COVID19 there was a reduction in the number of flights per day from Canadian airlines
   Number of flights from . Data used </p> 
+  </div>
   <button onclick="play();">Play</button>
+  <div><span>Flights on March </span><span id="value-time"></span><sup id="value-time-sup"></sup></div>
   <div>
     <!-- map -->
-    <svg id="map" width="640" height="600"></svg>
+    <svg id="map" width="640" height="640"></svg>
   </div>
-  <div class="row align-items-center">
-    <!-- <div class="col-sm-2"><p id="value-time"></p></div> -->
+  <div id="footer" class="row align-items-center">
+    <!-- <div class="col-sm-2"></div> -->
+    <span>Day of March:</span>
     <div class="col-sm"><div id="slider-time"></div></div>
   </div>
 </body>
@@ -134,9 +148,9 @@
 
   // SLIDER    
    // Time
-  var dataTime = d3.range(1, 32);
+  let dataTime = d3.range(1, 32);
 
-  var sliderTime = d3
+  let sliderTime = d3
     .sliderBottom()
     .min(1)
     .max(31)
@@ -146,7 +160,10 @@
     .tickValues(dataTime)
     .default(1)
     .on('onchange', val => {
-      // d3.select('p#value-time').text(val);
+
+      d3.select('#value-time').text(val);
+      d3.select('#value-time-sup').text(`${nth(sliderTime.value())}`);
+
       // add data
       svg.selectAll(".lines")
         // if you want a transition:
@@ -154,7 +171,7 @@
         // .duration(100)
         // .style("opacity", 0)
         .remove();
-      
+
       svg.selectAll("myPath")
         .data(link[val-1])
         .enter().append("path")
@@ -165,7 +182,7 @@
           .style("stroke-width", 2);
     });
 
-  var gTime = d3
+  let gTime = d3
     .select('div#slider-time')
     .append('svg')
     .attr('width', svg.attr("width"))
@@ -175,7 +192,17 @@
 
   gTime.call(sliderTime);
 
-  // d3.select('p#value-time').text(sliderTime.value());
+  const nth = function(d) {
+  if (d > 3 && d < 21) return 'th';
+  switch (d % 10) {
+    case 1:  return "st";
+    case 2:  return "nd";
+    case 3:  return "rd";
+    default: return "th";
+  }
+}
+  d3.select('#value-time').text(sliderTime.value());
+  d3.select('#value-time-sup').text(`${nth(sliderTime.value())}`);
 
   d3.select('svg#myPath').data(link[sliderTime.value()]);
 
