@@ -84,13 +84,6 @@
   let path = d3.geoPath()
       .projection(projection);
 
-  // Load flights data
-  let link;
-   d3.json("data.json")
-    .then(function(data) {
-      link = data;
-    });
-
   // Load world shape
   d3.json("static/land-110m.json")
     .then(function(world) {
@@ -110,16 +103,23 @@
           .style("stroke", colourLand)
           .attr("d", path);
 
-      // Add paths
-      svg.selectAll("myPath")
-        .data(link[0])
-        .enter().append("path")
-          .attr("class", "lines")  // need to specify class
-          .attr("d", function(d){ return path(d)})
-          .style("fill", "none")
-          .style("stroke", colourPath)
-          .style("stroke-width", 2);
+  });
 
+  // Load flights data
+  var link;
+  d3.json("data.json")
+    .then(function(data) {
+    link = data;
+
+    // Add paths
+    svg.selectAll("myPath")
+      .data(link[0])
+      .enter().append("path")
+        .attr("class", "lines")  // need to specify class
+        .attr("d", function(d){ return path(d)})
+        .style("fill", "none")
+        .style("stroke", colourPath)
+        .style("stroke-width", 2);
   });
 
   d3.select(window)
@@ -211,7 +211,7 @@
   d3.select('#value-time').text(sliderTime.value());
   d3.select('#value-time-sup').text(nth(sliderTime.value()));
 
-  d3.select('svg#myPath').data(link[sliderTime.value()]);
+  if (link) d3.select('svg#myPath').data(link[sliderTime.value()]);
 
   // Controls
   var t;
