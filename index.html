@@ -37,16 +37,25 @@
 
 <body onload="reset();">
   <div>
-    <h3>Canadian Airlines Flights and COVID-19</h3>
-    <p>Visualizing 21,609 flights from 1014 aircrafts</p>
-    <p>In mid-March 2020, all of Canada's provinces and territories declared states of emergency. Canada severely restricted its border access, barring travellers from all countries with some exceptions.</p> 
-    <p>Flights per day from Canadian airlines, March 2020</p>
+    <h2 style="padding-bottom: 0px;">Canadian Airlines and COVID-19</h2>
+    <span id="subtitle" style="font-size: 16px; color: #AAA; ">Visualizing 21,609 flights from 1014 aircrafts</span>
+    <p>In mid-March 2020, all of Canada's provinces and territories declared states of emergency. Canada severely restricted its border access, barring travellers from all countries with some exceptions.</p><br>
+    <h4>Flights per day from Canadian airlines, March 2020</h4>
   </div>
-  <div><span>Flights on March </span><span id="value-time"></span><sup id="value-time-sup"></sup></div>
+  <div style="font-size: 14px; color: #AAA;">
+    <i>Drag to rotate the world.</i>
+    <i>Play to animate through the month</i>
+  </div>
+  <div style="font-size: 14px; ">
+    </br>
+    <span>March </span><span id="value-time"></span><sup id="value-time-sup"></sup><span>: </span>
+    <span id="value-flights"></span><span> flights</span>
+  </div>
   <div style="text-align: center;">
+
     <!-- map -->
-    <svg id="map" width="640" height="640"></svg>
-    <i style="font-size: 14px; color: #AAA;">Drag to rotate the world</i>
+    <svg id="map" width="640" height="500"></svg>
+
   </div>
   <div id="footer" class="row align-items-center">
     <span style="font-size: 14px; margin-left: 120px; color: #AAA;">Day of March:</span>
@@ -58,7 +67,7 @@
   </div>
   <div id="footer-text">
      <a href="download.csv" download>csv</a>
-      Sources. Canadian Airlines were pulled from wikipedia's page: "List of airlines of Canada" [1]. Aircrafts' owner were taken from OpenSky Network's datasets [2]. Daily flights were pulled from OpenSky Network's API [3]. Date range used was between March 1, 2020 12:00:00 AM GMT and March 31, 2020 11:59:59 PM GMT. Airport coordinates were extracted from OurAirports [4]<br><br>
+    Sources. Canadian Airlines were pulled from wikipedia's page: "List of airlines of Canada" [1]. Aircrafts' owner were taken from OpenSky Network's datasets [2]. Daily flights were pulled from OpenSky Network's API [3]. Date range used was between March 1, 2020 12:00:00 AM GMT and March 31, 2020 11:59:59 PM GMT. Airport coordinates were extracted from OurAirports [4]<br><br>
 
     Methodology. From the list of Canadian airlines, only (32) airlines with a known callsign were considered. With a callsign, we can filter the (1014) aircrafts owned by Canadian airlines from the aircraft database. Flights with unknown arrival or departure airport were removed. Data's sanity was double-check, but not triple-checked.<br><br>
 
@@ -87,13 +96,13 @@
   let svg = d3.select("svg")
             .on("mousedown", mousedown),
     width = +svg.attr("width"),
-    height = +svg.attr("height");
+    height = +svg.attr("height") - 140;
 
   // Map and projection
   // projections: geoMercator, geoNaturalEarth1
   let projection = d3.geoOrthographic()
     .scale(220)
-    .translate([320,320])
+    .translate([320,250])
     .clipAngle(90)
     .rotate([90,-25,0]);
 
@@ -128,15 +137,19 @@
     .then(function(data) {
     link = data;
 
+    let lk = link[0];
     // Add paths
     svg.selectAll("myPath")
-      .data(link[0])
+      .data(lk)
       .enter().append("path")
         .attr("class", "lines")  // need to specify class
         .attr("d", function(d){ return path(d)})
         .style("fill", "none")
         .style("stroke", colourPath)
         .style("stroke-width", 2);
+
+    // Number of flights
+    d3.select('#value-flights').text(lk.length);
   });
 
   d3.select(window)
@@ -195,14 +208,17 @@
         // .style("opacity", 0)
         .remove();
 
+      let lk = link[val-1];
       svg.selectAll("myPath")
-        .data(link[val-1])
+        .data(lk)
         .enter().append("path")
           .attr("class", "lines")  // need to specify class
           .attr("d", function(d){ return path(d)})
           .style("fill", "none")
           .style("stroke", colourPath)
           .style("stroke-width", 2);
+
+      d3.select('#value-flights').text(lk.length);
     });
 
   let gTime = d3
