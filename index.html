@@ -27,11 +27,34 @@
     margin: auto;
     max-width: 640px;
     text-align: left;
+    padding-bottom: 25px;
   }
   #footer-text {
     font-size: 14px;
     color: #AAA;
     text-align: justify;
+  }
+  .svg-container {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 75px; /* aspect ratio */
+    vertical-align: top;
+    overflow: hidden;
+  }
+  .svg-container-map {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 0px;
+    vertical-align: top;
+    overflow: hidden;
+  }
+  .svg-content-responsive {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 0;
   }
   </style>
 </head>
@@ -48,7 +71,7 @@
   <div style="text-align: center;">
 
     <!-- map -->
-    <svg id="map" width="640" height="500"></svg>
+    <svg id="map" width="640" ></svg>
 
   </div>
   <div id="footer" class="row align-items-center">
@@ -98,9 +121,12 @@
 // D3 Map
   // The svg
   let svg = d3.select("svg")
-            .on("mousedown", mousedown),
-    width = +svg.attr("width"),
-    height = +svg.attr("height") - 140;
+            .classed("svg-container-map", true)
+            .on("mousedown", mousedown)
+            // .attr("width", 640)
+            // .attr("height", 500)
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "0 0 640 500");
 
   // Map and projection
   // projections: geoMercator, geoNaturalEarth1
@@ -120,6 +146,7 @@
 
       var sphere = {type:"Sphere"};
     
+      // Draw sphere
       svg.append("path")
         .datum(sphere)
         .attr("d", path)
@@ -195,7 +222,7 @@
     .min(1)
     .max(31)
     .step(1)
-    .width(svg.attr("width") - 120)
+    .width(svg.attr("width") - 60)
     // .tickFormat(d3.timeFormat('%Y'))
     .tickValues(dataTime)
     .default(1)
@@ -204,7 +231,7 @@
       d3.select('#value-time').text(val);
       d3.select('#value-time-sup').text(`${nth(sliderTime.value())}`);
 
-      // add data
+      // remove lines with old data
       svg.selectAll(".lines")
         // if you want a transition:
         // .transition();
@@ -212,6 +239,7 @@
         // .style("opacity", 0)
         .remove();
 
+      // add lines with new data
       let lk = link[val-1];
       svg.selectAll("myPath")
         .data(lk)
@@ -227,9 +255,13 @@
 
   let gTime = d3
     .select('#slider-time')
+    .classed("svg-container", true) 
     .append('svg')
-    .attr('width', svg.attr("width"))
-    .attr('height', 100)
+    // Responsive SVG needs these 2 attributes and no width and height attr.
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .attr("viewBox", "0 0 640 100")
+    // Class to make it responsive.
+    .classed("svg-content-responsive", true)
     .append('g')
     .attr('transform', 'translate(30,30)');
 
