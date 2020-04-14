@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title></title>
+  <title>🌎 Canadian Airlines and COVID-19</title>
   <meta charset="utf-8">
   <script src="static/d3.v5.js"></script>
   <script src="static/topojson-client.js"></script>
@@ -64,13 +64,63 @@
   #value-flights {
     font-size: 22px;
   }
+  #controls-left {
+    width: 150px;
+  }
+  #controls {
+    display: flex;
+  }
+  .controls-action {
+    height: 37px;
+    margin-right: 5px;
+    margin-top: 12px;
+  }
+  #pause {
+    width: 50px;
+  }
+  #footer-label {
+    font-size: 14px;
+    margin-left: 120px;
+    color: #AAA;
+  }
+  #subh4 {
+    padding: 0px;
+    margin: 0px;
+    font-size: 14px;
+    color: #AAA;
+  }
+
+  /* MOBILE */
+  @media only screen and (max-width: 600px) {
+    #controls {
+      flex-direction: column-reverse;
+    }
+    .controls-action {
+      width: 45%;
+    }
+    #controls-left {
+      width: 100%;
+    }
+    #pause {
+      width: 45%;
+    }
+    #slider-time {
+      padding-bottom: 75px;
+    }
+    #footer {
+      text-align: center;
+    }
+    #footer-label {
+      margin-left: unset;
+    }
+  }
   </style>
 </head>
 
 <body onload="reset();">
   <div style="">
     <h4 >Flights per day from Canadian airlines, March 2020</h4>
-    <!-- <p>Effects from serve</p> -->
+    <p id="subh4" >Impact on air travel from COVID-19</p>
   </div>
   <div style="font-size: 14px; ">
     </br>
@@ -83,11 +133,13 @@
     <svg id="map" width="640" ></svg>
 
   </div>
-  <div id="footer" class="row align-items-center">
-    <span style="font-size: 14px; margin-left: 120px; color: #AAA;">Day of March:</span>
-    <div class="col-sm" style="display: flex;">
-      <button id="play" onclick="play();" style="height: 37px; margin-right: 5px; margin-top: 12px;" >▶</button>
-      <button id="pause" onclick="pause();" style="height: 37px; width: 51px; margin-top: 12px;" disabled="">▌▌</button>
+  <div id="footer" >
+    <span id="footer-label" >Day of March:</span>
+    <div id="controls" class="col-sm" >
+      <span id="controls-left">
+        <button id="play" class="controls-action" onclick="play();"  >▶</button>
+        <button id="pause" class="controls-action" onclick="pause();" disabled="">▌▌</button>
+      </span>
       <span id="slider-time" onclick="pause();"></span>
     </div>
   </div>
