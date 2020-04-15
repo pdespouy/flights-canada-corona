@@ -1,8 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <title>🌎 Canadian Airlines and COVID-19</title>
   <meta charset="utf-8">
+
+  <meta name="description" content="A data visualization: Flights per day from Canadian airlines on March 2020">
+  <meta name="author" content="Pedro Despouy">
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+  <!-- SOCIAL - TWITTER -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:creator" content="@PedroDespouy">
+  <meta name="twitter:title" content="Canadian Airlines and Coronavirus">
+  <meta name="twitter:description" content="A data visualization: Flights per day from Canadian airlines on March 2020.">
+  <meta name="twitter:image" content="https://despouy.ca/flights-canada-corona/img/preview.jpg">
+  <!-- SOCIAL - OPEN -->
+  <meta property="og:url" content="https://despouy.ca/flights-canada-corona/index.html">
+  <meta property="og:title" content="Canadian Airlines and Coronavirus">
+  <meta property="og:description" content="A data visualization: Flights per day from Canadian airlines on March 2020.">
+  <meta property="og:site_name" content="Canadian Airlines and Coronavirus">
+  <meta property="og:image" content="https://despouy.ca/flights-canada-corona/img/preview.jpg">
+
   <script src="static/d3.v5.js"></script>
   <script src="static/topojson-client.js"></script>
   <script src="static/d3-simple-slider.min.js"></script>
@@ -13,7 +31,7 @@
 <body onload="reset();">
   <div>
     <h4 >Flights per day from Canadian airlines</h4>
-    <p id="subh4" >Impact on air travel from COVID-19, March 2020</p>
+    <p id="subh4" >Impact on air travel from Coronavirus, March 2020</p>
   </div>
   <div id="header-text">
     <span id="value-flights"></span><span> flights on </span>
@@ -41,7 +59,7 @@
   </div>
   <div id="footer-text">
 
-    <h2 id="footer-title">Canadian Airlines and COVID-19</h2>
+    <h2 id="footer-title">Canadian Airlines and Coronavirus</h2>
     <span id="footer-subtitle">Visualizing 21,608 flights from 497 aircrafts</span><br>
     <span class="footer-detail">Updated: April 14, 2020</span><br>
     <span class="footer-detail">Download <a href="download.csv" download>CSV</a></span><br><br>
