@@ -19,6 +19,16 @@ i {
   font-size: 12px;
   color: var(--grey-400);
 }
+h4 {
+  font-size: 22px;
+  padding-bottom: 0px;
+}
+#subh4 {
+  padding: 0px;
+  margin: 0px;
+  font-size: 16px;
+  color: var(--grey-400);
+}
 #header-text {
   font-size: 14px;
   margin-top: 15px;
@@ -95,12 +105,6 @@ i {
 }
 #pause {
   width: 50px;
-}
-#subh4 {
-  padding: 0px;
-  margin: 0px;
-  font-size: 14px;
-  color: var(--grey-400);
 }
 #footer-subtitle {
   font-size: 16px;
