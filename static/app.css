@@ -1,133 +1,139 @@
-  body {
-    margin: auto;
-    max-width: 640px;
-    padding: 0px 15px;
-    /*text-align: center;*/
-  }
-  svg {
-   /* width: 1280px;
-    height: 800px;
-    pointer-events: all;*/
-  }
-  sup {
-    font-size: x-small
-  }
-  i {
-    font-size: 12px;
-    color: #AAA;
-  }
-  #header-text {
-    font-size: 14px;
-    margin-top: 15px;
-  }
-  #main {
-    text-align: center;
-  }
-  #footer {
-    margin: auto;
-    max-width: 640px;
-    text-align: left;
-    padding-bottom: 25px;
-  }
-  #footer-text {
-    font-size: 14px;
-    color: #AAA;
-    text-align: justify;
-  }
-  #footer-title {
-    padding-bottom: 0px;
-  }
-  #footer-label {
-    font-size: 14px;
-    color: #AAA;
-    margin: 0px;
-    display: block;
-    height: 0px;
-  }
-  .svg-container {
-    display: inline-block;
-    position: relative;
-    width: 100%;
-    padding-bottom: 75px; /* aspect ratio */
-    vertical-align: top;
-    overflow: hidden;
-  }
-  .svg-container-map {
-    display: inline-block;
-    position: relative;
-    width: 100%;
-    padding-bottom: 0px;
-    vertical-align: top;
-    overflow: hidden;
-  }
-  .svg-content-responsive {
-    display: inline-block;
-    position: absolute;
-    top: 10px;
-    left: 0;
-  }
-  .a-discrete {
-    color: inherit;
-    text-decoration: underline;
-  }
-  #value-flights {
-    font-size: 22px;
-  }
-  #controls-left {
-    width: 150px;
-  }
-  #controls-right {
-    width: 100%;
-  }
+:root {
+  --grey-100: #AAA;
+  --grey-400: #86868B;
+  --grey-700: #1D1D1F;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: auto;
+  max-width: 640px;
+  padding: 0px 15px;
+  color: var(--grey-700);
+}
+sup {
+  font-size: x-small
+}
+i {
+  font-size: 12px;
+  color: var(--grey-400);
+}
+#header-text {
+  font-size: 14px;
+  margin-top: 15px;
+}
+#main {
+  text-align: center;
+}
+#footer {
+  margin: auto;
+  max-width: 640px;
+  text-align: left;
+  padding-bottom: 25px;
+}
+#footer-text {
+  font-size: 14px;
+  color: var(--grey-400);
+  text-align: justify;
+}
+#footer-title {
+  padding-bottom: 0px;
+}
+#footer-label {
+  font-size: 14px;
+  color: var(--grey-400);
+  margin: 0px;
+  display: block;
+  height: 0px;
+}
+#footer-text-footer {
+  color: var(--grey-100);
+}
+.svg-container {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  padding-bottom: 75px; /* aspect ratio */
+  vertical-align: top;
+  overflow: hidden;
+}
+.svg-container-map {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  padding-bottom: 0px;
+  vertical-align: top;
+  overflow: hidden;
+}
+.svg-content-responsive {
+  display: inline-block;
+  position: absolute;
+  top: 10px;
+  left: 0;
+}
+.a-discrete {
+  color: inherit;
+  text-decoration: underline;
+}
+#value-flights {
+  font-size: 22px;
+}
+#controls-left {
+  width: 150px;
+}
+#controls-right {
+  width: 100%;
+}
+#controls {
+  display: flex;
+}
+.controls-action {
+  height: 37px;
+  margin-right: 5px;
+  margin-top: 12px;
+}
+#pause {
+  width: 50px;
+}
+#subh4 {
+  padding: 0px;
+  margin: 0px;
+  font-size: 14px;
+  color: var(--grey-400);
+}
+#footer-subtitle {
+  font-size: 16px;
+}
+/* MOBILE */
+@media only screen and (max-width: 600px) {
   #controls {
-    display: flex;
+    flex-direction: column-reverse;
   }
   .controls-action {
-    height: 37px;
-    margin-right: 5px;
-    margin-top: 12px;
+    width: 45%;
+  }
+  #controls-left {
+    width: 100%;
   }
   #pause {
-    width: 50px;
+    width: 45%;
   }
-  #subh4 {
-    padding: 0px;
-    margin: 0px;
-    font-size: 14px;
-    color: #AAA;
+  #slider-time {
+    padding-bottom: 75px;
   }
-  #subtitle {
-    font-size: 16px;
-    color: #AAA;
+  #footer {
+    text-align: center;
   }
-  /* MOBILE */
-  @media only screen and (max-width: 600px) {
-    #controls {
-      flex-direction: column-reverse;
-    }
-    .controls-action {
-      width: 45%;
-    }
-    #controls-left {
-      width: 100%;
-    }
-    #pause {
-      width: 45%;
-    }
-    #slider-time {
-      padding-bottom: 75px;
-    }
-    #footer {
-      text-align: center;
-    }
-    #footer-label {
-      /*margin: unset;
-      margin: 15px 0px;
-      height: 15px;*/
-      display: none;
-    }
-    #controls-right {
-      display: flex;
-      flex-direction: column-reverse;
-    }
+  #footer-label {
+    /* on mobile is better not to display */
+    /*margin: unset;
+    margin: 15px 0px;
+    height: 15px;*/
+    display: none;
   }
+  #controls-right {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+}

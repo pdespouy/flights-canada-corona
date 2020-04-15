@@ -12,12 +12,14 @@
 
 <body onload="reset();">
   <div>
-    <h4 >Flights per day from Canadian airlines, March 2020</h4>
-    <p id="subh4" >Impact on air travel from COVID-19</p>
+    <h4 >Flights per day from Canadian airlines</h4>
+    <p id="subh4" >Impact on air travel from COVID-19, March 2020</p>
   </div>
   <div id="header-text">
     <span id="value-flights"></span><span> flights on </span>
-    <span>March </span><span id="value-time"></span><!-- <sup id="value-time-sup"></sup> -->
+    <span>March </span><span id="value-time"></span>
+    <!-- if you want to add th/st/nd to dates -->
+    <!-- <sup id="value-time-sup"></sup> -->
   </div>
   <div id="main">
 
@@ -40,9 +42,9 @@
   <div id="footer-text">
 
     <h2 id="footer-title">Canadian Airlines and COVID-19</h2>
-    <span id="subtitle">Visualizing 21,608 flights from 497 aircrafts</span><br>
-    Updated: April 14, 2020<br>
-    Download <a href="download.csv" download>CSV</a><br><br>
+    <span id="footer-subtitle">Visualizing 21,608 flights from 497 aircrafts</span><br>
+    <span class="footer-detail">Updated: April 14, 2020</span><br>
+    <span class="footer-detail">Download <a href="download.csv" download>CSV</a></span><br><br>
 
     Intro. In mid-March 2020, all of Canada's provinces and territories declared states of emergency. Canada severely restricted its border access, barring travellers from all countries with some exceptions. Number of flights per day from Canadian airlines dropped from ~900 to ~200.<br><br>
 
@@ -57,10 +59,12 @@
     Thank you,<br>
     <a href="https://www.despouy.ca/">Pedro</a><br><br>
 
-    [1] https://en.wikipedia.org/wiki/List_of_airlines_of_Canada<br>
-    [2] https://opensky-network.org/datasets/<br>
-    [3] https://opensky-network.org/apidoc/<br>
-    [4] https://ourairports.com/data/<br><br>
+    <div id="footer-text-footer">
+      [1] https://en.wikipedia.org/wiki/List_of_airlines_of_Canada<br>
+      [2] https://opensky-network.org/datasets/<br>
+      [3] https://opensky-network.org/apidoc/<br>
+      [4] https://ourairports.com/data/<br><br>
+    </div>
   </div>
 </body>
 
