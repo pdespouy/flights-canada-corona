@@ -22,7 +22,7 @@ let projection = d3.geoOrthographic()
   .scale(220)
   .translate([320,250])
   .clipAngle(90)
-  .rotate([90,-45,0]);
+  .rotate([100,-45,0]);
 
 // Path generator
 let path = d3.geoPath()

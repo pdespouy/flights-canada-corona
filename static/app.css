@@ -10,6 +10,7 @@ body {
   margin: auto;
   padding: 0px 15px;
   color: var(--grey-700);
+  max-width: 1500px;
 }
 sup {
   font-size: x-small
@@ -35,10 +36,10 @@ h4 {
 #main {
   text-align: center;
 }
-#footer {
+#main-footer {
   margin: auto;
   max-width: 640px;
-  text-align: left;
+  text-align: center;
   padding-bottom: 25px;
 }
 #footer-text {
@@ -46,6 +47,7 @@ h4 {
   color: var(--grey-400);
   text-align: justify;
   max-width: 640px;
+  margin: auto;
 }
 #footer-title {
   padding-bottom: 0px;
@@ -97,6 +99,7 @@ h4 {
 }
 #controls {
   display: flex;
+  text-align: left;
 }
 .controls-action {
   height: 37px;
@@ -126,7 +129,7 @@ h4 {
   #slider-time {
     padding-bottom: 75px;
   }
-  #footer {
+  #main-footer {
     text-align: center;
   }
   #footer-label {
