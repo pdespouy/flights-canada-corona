@@ -29,7 +29,7 @@ let path = d3.geoPath()
     .projection(projection);
 
 // Load world shape
-d3.json("static/land-110m.json")
+d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json")
   .then(function(world) {
 
     var sphere = {type:"Sphere"};
