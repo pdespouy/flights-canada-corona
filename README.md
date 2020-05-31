@@ -1,9 +1,9 @@
-# Flights per day from Canadian airlines on March 2020
+# Canadian Airlines and Coronavirus
 
 
 ## Overview
 
-A D3 visualization to show effects of Corona on daily flights form Canadian airlines
+A D3 visualization to show effects of Coronavirus on daily flights form Canadian airlines
 
 ## Preview
 
